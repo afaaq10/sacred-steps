@@ -83,16 +83,15 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		textAlign: "center",
 	},
+	buttonContainer: {
+		flexDirection: "row",
+		justifyContent: "space-around",
+	},
 	counterButton: {
 		backgroundColor: "yellow",
 		padding: 10,
 		borderRadius: 15,
-		width: 105
-	},
-	buttonContainer: {
-		flexDirection: "row",
-		justifyContent: "space-around",
-		alignItems: "center",
+		width: 115,
 	},
 	buttonText: {
 		color: 'black',
