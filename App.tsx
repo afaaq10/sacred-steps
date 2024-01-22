@@ -34,7 +34,7 @@ export default function App({ onFinish }: any) {
 			clearInterval(intervalRef.current);
 			setIsRunning(false);
 			if (round === 6) {
-				onFinish(); // Call the provided onFinish callback when all rounds are completed
+				onFinish();
 			}
 		}
 	};
