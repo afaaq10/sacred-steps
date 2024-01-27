@@ -31,7 +31,6 @@ export default function App({ onFinish }: any) {
 		}
 	};
 
-
 	const nextHandler = () => {
 		if (round < 7) {
 			setRound((prevRound) => prevRound + 1);
