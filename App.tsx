@@ -5,26 +5,40 @@
  *
  * @copyright 2024 Afaq Majeed
  */
-
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Text, TouchableOpacity, View, SafeAreaView, StyleSheet, ScrollView } from 'react-native';
 import { Colors } from './src/colors/colors';
 
 export default function App() {
+    const [counter, setCounter] = useState(0);
+    const [buttonText, setButtonText] = useState('Start');
+
+    const handleNextPress = () => {
+        if (counter === 0) setButtonText("Next")
+        if (counter < 7) {
+            setCounter((prevCounter) => prevCounter + 1);
+            if (counter === 6) {
+                setButtonText('Finish');
+            }
+        } else {
+            setCounter(0);
+            setButtonText('Start');
+        }
+    };
 
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={{ flex: 1 }}>
-                <View style={{ justifyContent: "center", alignItems: "center", gap: 65, marginTop: 65 }}>
+                <View style={{ justifyContent: 'center', alignItems: 'center', gap: 65, marginTop: 65 }}>
                     <View style={styles.circle}>
-                        <Text style={[styles.buttonText, { color: "white" }]}>Test</Text>
+                        <Text style={[styles.buttonText, { color: 'white' }]}>{counter}</Text>
                     </View>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={() => {}} style={[styles.counterButton, { backgroundColor: 'white' }]}>
                             <Text style={styles.buttonText}>Reset</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {}} style={styles.counterButton}>
-                            <Text style={styles.buttonText}>test</Text>
+                        <TouchableOpacity onPress={handleNextPress} style={styles.counterButton}>
+                            <Text style={styles.buttonText}>{buttonText}</Text>
                         </TouchableOpacity>
                     </View>
                     <View>
@@ -32,8 +46,7 @@ export default function App() {
                         <Text style={styles.counterText}>Test</Text>
                     </View>
                     <Text style={styles.counterText}>Test</Text>
-                    <View style={styles.totalTimeContainer}>
-                    </View>
+                    <View style={styles.totalTimeContainer}></View>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -49,7 +62,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor: "white",
+        borderColor: 'white',
         marginTop: 35,
     },
     container: {
@@ -60,16 +73,16 @@ const styles = StyleSheet.create({
     },
     counterText: {
         fontSize: 18,
-        textAlign: "center",
+        textAlign: 'center',
         color: Colors.Light,
     },
     buttonContainer: {
-        flexDirection: "row",
-        justifyContent: "space-around",
+        flexDirection: 'row',
+        justifyContent: 'space-around',
         gap: 30,
     },
     counterButton: {
-        backgroundColor: "yellow",
+        backgroundColor: 'yellow',
         padding: 10,
         borderRadius: 15,
         width: 115,
@@ -78,7 +91,7 @@ const styles = StyleSheet.create({
         color: 'black',
         textAlign: 'center',
         fontSize: 16,
-        fontWeight: "bold",
+        fontWeight: 'bold',
     },
     roundTime: {
         flexDirection: 'row',
