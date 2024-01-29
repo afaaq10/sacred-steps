@@ -39,7 +39,6 @@ export default function App({ onFinish }: any) {
 		}
 	};
 
-
 	const nextHandler = () => {
 		if (round < 7) {
 			setRound((prevRound) => prevRound + 1);
@@ -73,9 +72,6 @@ export default function App({ onFinish }: any) {
 
 		return `${formattedHours}${formattedMinutes}:${formattedSeconds}`;
 	};
-
-
-	// ...
 
 	const renderRoundTimes = () => {
 		return elapsedTimes.map((time, index) => (
