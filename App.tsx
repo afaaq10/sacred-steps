@@ -26,6 +26,11 @@ export default function App() {
         }
     };
 
+    const handleReset = () => {
+        setCounter(0);
+        setButtonText("Start");
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={{ flex: 1 }}>
@@ -34,7 +39,7 @@ export default function App() {
                         <Text style={[styles.buttonText, { color: 'white' }]}>{counter}</Text>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity onPress={() => {}} style={[styles.counterButton, { backgroundColor: 'white' }]}>
+                        <TouchableOpacity onPress={handleReset} style={[styles.counterButton, { backgroundColor: 'white' }]}>
                             <Text style={styles.buttonText}>Reset</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={handleNextPress} style={styles.counterButton}>
