@@ -65,9 +65,6 @@ export default function App({ onFinish }: any) {
 		return `${formattedHours}${formattedMinutes}:${formattedSeconds}`;
 	};
 
-
-	// ...
-
 	const renderRoundTimes = () => {
 		return elapsedTimes.map((time, index) => (
 			<View key={index} style={styles.roundTime}>
