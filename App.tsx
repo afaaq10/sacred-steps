@@ -1,3 +1,11 @@
+/**
+ * sacred-steps
+ *
+ * @author Afaaq Majeed
+ *
+ * @copyright 2024 Afaq Majeed
+ */
+
 import React, { useState, useRef } from 'react';
 import { Text, TouchableOpacity, View, SafeAreaView, StyleSheet, ScrollView } from 'react-native';
 import { Colors } from './src/colors/colors';
