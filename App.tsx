@@ -1,20 +1,18 @@
-/**
- * sacred-steps
- *
- * @author Afaaq Majeed
- *
- * @copyright 2024 Afaq Majeed
- */
-import React, { useState } from 'react';
-import { Text, TouchableOpacity, View, SafeAreaView, StyleSheet, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import Svg, { Circle, Text } from 'react-native-svg';
 import { Colors } from './src/colors/colors';
 
 export default function App() {
     const [counter, setCounter] = useState(0);
     const [buttonText, setButtonText] = useState('Start');
+    const [dashArray, setDashArray] = useState('0 100');
 
     const handleNextPress = () => {
-        if (counter === 0) setButtonText("Next")
+        if (counter === 0) {
+            setButtonText('Next');
+        }
+
         if (counter < 7) {
             setCounter((prevCounter) => prevCounter + 1);
             if (counter === 6) {
@@ -26,31 +24,75 @@ export default function App() {
         }
     };
 
-    const handleReset = () => {
-        setCounter(0);
-        setButtonText("Start");
+    const calculateDashArray = () => {
+        const totalSegments = 7;
+        const circumference = 31.4; // Circumference of the circle (2 * pi * radius)
+
+        if (counter === 0) {
+            // Initial state, no fill
+            return '0 100';
+        } else if (counter < totalSegments) {
+            // Filling in increments
+            const segmentSize = circumference / totalSegments;
+            const filledLength = segmentSize * counter;
+            const remainingLength = circumference - filledLength;
+            return `${filledLength} ${remainingLength}`;
+        } else {
+            // Full circle
+            return '31.4 0'; // Circumference of the circle
+        }
     };
 
+    useEffect(() => {
+        setDashArray(calculateDashArray());
+    }, [counter]);
+
+    console.log(dashArray)
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={{ flex: 1 }}>
-                <View style={{ justifyContent: 'center', alignItems: 'center', gap: 65, marginTop: 65 }}>
-                    <View style={styles.circle}>
-                        <Text style={[styles.buttonText, { color: 'white' }]}>{counter}</Text>
-                    </View>
+                <View style={{ justifyContent: 'center', alignItems: 'center', gap: 65, marginTop: 85 }}>
+                    <Svg height="170" width="170" viewBox="0 0 20 20">
+                        <Circle r="5" cx="10" cy="10" fill={Colors.Dark} stroke={Colors.Gray} strokeWidth="10" />
+                        {counter === 0 ? (
+                            <Circle
+                                r="5"
+                                cx="10"
+                                cy="10"
+                                fill={Colors.Dark} // Set the color you want for an empty circle
+                                stroke={Colors.Light}
+                                strokeWidth="10"
+                                transform="rotate(-90) translate(-20)"
+                            />
+                        ) : (
+                            <Circle
+                                r="5"
+                                cx="10"
+                                cy="10"
+                                fill="transparent"
+                                stroke="tomato"
+                                strokeWidth="10"
+                                strokeDasharray={dashArray}
+                                transform="rotate(-90) translate(-20)"
+                            />
+                        )}
+                        <Text x="50%" y="50%" fontSize="6" fontWeight="bold" fill="white" textAnchor="middle">
+                            {counter}
+                        </Text>
+                    </Svg>
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity onPress={handleReset} style={[styles.counterButton, { backgroundColor: 'white' }]}>
-                            <Text style={styles.buttonText}>Reset</Text>
+                        <TouchableOpacity onPress={() => {}} style={[styles.counterButton, { backgroundColor: 'white' }]}>
+                            <Text>Reset</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={handleNextPress} style={styles.counterButton}>
-                            <Text style={styles.buttonText}>{buttonText}</Text>
+                            <Text>{buttonText}</Text>
                         </TouchableOpacity>
                     </View>
                     <View>
-                        <Text style={styles.counterText}>Test</Text>
-                        <Text style={styles.counterText}>Test</Text>
+                        <Text>Test</Text>
+                        <Text>Test</Text>
                     </View>
-                    <Text style={styles.counterText}>Test</Text>
+                    <Text>Test</Text>
                     <View style={styles.totalTimeContainer}></View>
                 </View>
             </ScrollView>
@@ -59,17 +101,6 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-    circle: {
-        width: 135,
-        height: 135,
-        borderWidth: 0.5,
-        borderRadius: 70,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderColor: 'white',
-        marginTop: 35,
-    },
     container: {
         flex: 1,
         gap: 20,
@@ -88,7 +119,7 @@ const styles = StyleSheet.create({
     },
     counterButton: {
         backgroundColor: 'yellow',
-        padding: 10,
+        padding: 20,
         borderRadius: 15,
         width: 115,
     },
@@ -97,14 +128,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 16,
         fontWeight: 'bold',
-    },
-    roundTime: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginVertical: 5,
-    },
-    roundTimeText: {
-        color: Colors.Light,
     },
     totalTimeContainer: {
         marginTop: 20,
