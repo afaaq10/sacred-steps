@@ -24,6 +24,11 @@ export default function App() {
         }
     };
 
+    const handleReset = () => {
+        setCounter(0);
+        setDashArray('0 100');
+    };
+
     const calculateDashArray = () => {
         const totalSegments = 7;
         const circumference = 31.4;
@@ -51,34 +56,22 @@ export default function App() {
                 <View style={{ justifyContent: 'center', alignItems: 'center', gap: 65, marginTop: 85 }}>
                     <Svg height="170" width="170" viewBox="0 0 20 20">
                         <Circle r="5" cx="10" cy="10" fill={Colors.Dark} stroke={Colors.Gray} strokeWidth="10" />
-                        {counter === 0 ? (
-                            <Circle
-                                r="5"
-                                cx="10"
-                                cy="10"
-                                fill={Colors.Dark}
-                                stroke={Colors.Gray}
-                                strokeWidth="10"
-                                transform="rotate(-90) translate(-20)"
-                            />
-                        ) : (
-                            <Circle
-                                r="5"
-                                cx="10"
-                                cy="10"
-                                fill="transparent"
-                                stroke="tomato"
-                                strokeWidth="10"
-                                strokeDasharray={dashArray}
-                                transform="rotate(-90) translate(-20)"
-                            />
-                        )}
+                        <Circle
+                            r="5"
+                            cx="10"
+                            cy="10"
+                            fill="transparent"
+                            stroke="tomato"
+                            strokeWidth="10"
+                            strokeDasharray={dashArray}
+                            transform="rotate(-90) translate(-20)"
+                        />
                         <Text x="50%" y="50%" fontSize="6" fontWeight="bold" fill="white" textAnchor="middle">
                             {counter}
                         </Text>
                     </Svg>
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity onPress={() => {}} style={[styles.counterButton, { backgroundColor: 'white' }]}>
+                        <TouchableOpacity onPress={handleReset} style={[styles.counterButton, { backgroundColor: 'white' }]}>
                             <Text>Reset</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={handleNextPress} style={styles.counterButton}>
