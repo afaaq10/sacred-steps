@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import Svg, { Circle, Text } from 'react-native-svg';
 import { Colors } from './src/colors/colors';
@@ -26,24 +26,21 @@ export default function App() {
 
     const calculateDashArray = () => {
         const totalSegments = 7;
-        const circumference = 31.4; // Circumference of the circle (2 * pi * radius)
+        const circumference = 31.4;
 
         if (counter === 0) {
-            // Initial state, no fill
             return '0 100';
         } else if (counter < totalSegments) {
-            // Filling in increments
             const segmentSize = circumference / totalSegments;
             const filledLength = segmentSize * counter;
             const remainingLength = circumference - filledLength;
             return `${filledLength} ${remainingLength}`;
         } else {
-            // Full circle
-            return '31.4 0'; // Circumference of the circle
+            return '31.4 0';
         }
     };
 
-    useEffect(() => {
+    React.useEffect(() => {
         setDashArray(calculateDashArray());
     }, [counter]);
 
@@ -59,8 +56,8 @@ export default function App() {
                                 r="5"
                                 cx="10"
                                 cy="10"
-                                fill={Colors.Dark} // Set the color you want for an empty circle
-                                stroke={Colors.Light}
+                                fill={Colors.Dark}
+                                stroke={Colors.Gray}
                                 strokeWidth="10"
                                 transform="rotate(-90) translate(-20)"
                             />
