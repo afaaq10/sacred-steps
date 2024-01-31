@@ -53,7 +53,7 @@ export default function App() {
         setDashArray(calculateDashArray());
     }, [counter]);
 
-    console.log(dashArray)
+    console.log(dashArray);
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={{ flex: 1 }}>
