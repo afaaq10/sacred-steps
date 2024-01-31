@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import Svg, { Circle, Text } from 'react-native-svg';
 import { Colors } from './src/colors/colors';
 
 export default function App() {
-    const [counter, setCounter] = useState(0);
-    const [buttonText, setButtonText] = useState('Start');
-    const [dashArray, setDashArray] = useState('0 100');
+    const [counter, setCounter] = React.useState(0);
+    const [buttonText, setButtonText] = React.useState('Start');
+    const [dashArray, setDashArray] = React.useState('0 100');
 
     const handleNextPress = () => {
         if (counter === 0) setButtonText('Next');
