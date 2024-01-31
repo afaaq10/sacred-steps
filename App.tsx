@@ -1,3 +1,11 @@
+/**
+ * sacred-steps
+ *
+ * @author Afaaq Majeed
+ *
+ * @copyright 2024 Afaq Majeed
+ */
+
 import React from 'react';
 import { View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import Svg, { Circle, Text } from 'react-native-svg';
