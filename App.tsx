@@ -9,10 +9,7 @@ export default function App() {
     const [dashArray, setDashArray] = useState('0 100');
 
     const handleNextPress = () => {
-        if (counter === 0) {
-            setButtonText('Next');
-        }
-
+        if (counter === 0) setButtonText('Next');
         if (counter < 7) {
             setCounter((prevCounter) => prevCounter + 1);
             if (counter === 6) {
