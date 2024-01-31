@@ -30,9 +30,8 @@ export default function App() {
         const totalSegments = 7;
         const circumference = 31.4;
 
-        if (counter === 0) {
-            return '0 100';
-        } else if (counter < totalSegments) {
+        if (counter === 0) return '0 100';
+        else if (counter < totalSegments) {
             const segmentSize = circumference / totalSegments;
             const filledLength = segmentSize * counter;
             const remainingLength = circumference - filledLength;
