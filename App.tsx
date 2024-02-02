@@ -3,7 +3,7 @@
  *
  * @author Afaaq Majeed
  *
- * @copyright 2024 Afaq Majeed
+ * @copyright 2024 Afaaq Majeed
  */
 
 import React from 'react';
