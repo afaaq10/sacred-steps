@@ -7,14 +7,14 @@
  */
 
 import React from 'react';
-import { View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import Svg, { Circle, Text } from 'react-native-svg';
+import { View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native';
+import Svg, { Circle, Text as SvgText } from 'react-native-svg';
 import { Colors } from './src/colors/colors';
 
 export default function App() {
     const [counter, setCounter] = React.useState(0);
     const [buttonText, setButtonText] = React.useState('Start');
-    const [dashArray, setDashArray] = React.useState('0 100');
+    const [dashArray, setDashArray] = React.useState('0 31.4');
 
     const handleNextPress = () => {
         if (counter === 0) setButtonText('Next');
@@ -29,14 +29,14 @@ export default function App() {
 
     const handleReset = () => {
         setCounter(0);
-        setDashArray('0 100');
+        setDashArray('0 31.4');
     };
 
     const calculateDashArray = () => {
         const totalSegments = 7;
         const circumference = 31.4;
 
-        if (counter === 0) return '0 100';
+        if (counter === 0) return '0 31.4';
         else if (counter < totalSegments) {
             const segmentSize = circumference / totalSegments;
             const filledLength = segmentSize * counter;
@@ -51,6 +51,7 @@ export default function App() {
         setDashArray(calculateDashArray());
     }, [counter]);
 
+    console.log(dashArray);
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={{ flex: 1 }}>
@@ -67,16 +68,16 @@ export default function App() {
                             strokeDasharray={dashArray}
                             transform="rotate(-90) translate(-20)"
                         />
-                        <Text x="50%" y="50%" fontSize="6" fontWeight="bold" fill="white" textAnchor="middle">
+                        <SvgText x="50%" y="50%" fontSize="5" fontWeight="bold" fill="white" textAnchor="middle">
                             {counter}
-                        </Text>
+                        </SvgText>
                     </Svg>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={handleReset} style={[styles.counterButton, { backgroundColor: 'white' }]}>
-                            <Text>Reset</Text>
+                            <Text style={styles.buttonText}>Reset</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={handleNextPress} style={styles.counterButton}>
-                            <Text>{buttonText}</Text>
+                            <Text style={styles.buttonText}>{buttonText}</Text>
                         </TouchableOpacity>
                     </View>
                     <View>
@@ -98,11 +99,6 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: Colors.Dark,
     },
-    counterText: {
-        fontSize: 18,
-        textAlign: 'center',
-        color: Colors.Light,
-    },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
@@ -110,9 +106,10 @@ const styles = StyleSheet.create({
     },
     counterButton: {
         backgroundColor: 'yellow',
-        padding: 20,
+        padding: 9,
         borderRadius: 15,
         width: 115,
+        color: 'black',
     },
     buttonText: {
         color: 'black',
