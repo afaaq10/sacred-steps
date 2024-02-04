@@ -20,9 +20,7 @@ export default function App() {
         if (counter === 0) setButtonText('Next');
         if (counter < 7) {
             setCounter((prevCounter) => prevCounter + 1);
-            if (counter === 6) {
-                setButtonText('Finish');
-            }
+            if (counter === 6) setButtonText('Finish');
         } else {
             setCounter(0);
             setButtonText('Start');
