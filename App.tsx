@@ -1,13 +1,13 @@
 /**
- * sacred-steps
- *
- * @author Afaaq Majeed
- *
- * @copyright 2024 Afaaq Majeed
- */
+* sacred-steps
+*
+* @author Afaaq Majeed
+*
+* @copyright 2024 Afaaq Majeed
+*/
 
 import React from 'react';
-import { View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native';
+import { View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, Text as RNText } from 'react-native';
 import Svg, { Circle, Text as SvgText } from 'react-native-svg';
 import { Colors } from './src/colors/colors';
 
@@ -15,21 +15,61 @@ export default function App() {
     const [counter, setCounter] = React.useState(0);
     const [buttonText, setButtonText] = React.useState('Start');
     const [dashArray, setDashArray] = React.useState('0 31.4');
+    const [startTime, setStartTime] = React.useState(null);
+    const [roundTimes, setRoundTimes] = React.useState([]);
+    const [totalTime, setTotalTime] = React.useState(0);
+    const intervalRef = React.useRef(null);
+
+    const formatTime = (milliseconds) => {
+        const totalSeconds = Math.floor(milliseconds / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        const formattedHours = hours > 0 ? `${String(hours).padStart(2, '0')}h ` : '';
+        const formattedMinutes = `${String(minutes).padStart(2, '0')}m `;
+        const formattedSeconds = `${String(seconds).padStart(2, '0')}s`;
+
+        return formattedHours + formattedMinutes + formattedSeconds;
+    };
 
     const handleNextPress = () => {
-        if (counter === 0) setButtonText('Next');
+        if (counter === 0) {
+            setButtonText('Next');
+            setStartTime(new Date());
+            setTotalTime(0);
+            startInterval();
+        }
+
         if (counter < 7) {
+            const endTime = new Date();
+            const roundTime = endTime - startTime;
+            setRoundTimes((prevRoundTimes) => [...prevRoundTimes, roundTime]);
+
             setCounter((prevCounter) => prevCounter + 1);
-            if (counter === 6) setButtonText('Finish');
+            if (counter === 6) {
+                setButtonText('Finish');
+                clearInterval(intervalRef.current);
+            } else {
+                setStartTime(new Date());
+            }
         } else {
             setCounter(0);
             setButtonText('Start');
+            setStartTime(null);
+            setRoundTimes([]);
+            setTotalTime(0);
+            clearInterval(intervalRef.current);
         }
     };
 
     const handleReset = () => {
         setCounter(0);
         setDashArray('0 31.4');
+        setStartTime(null);
+        setRoundTimes([]);
+        setTotalTime(0);
+        clearInterval(intervalRef.current);
     };
 
     const calculateDashArray = () => {
@@ -51,6 +91,30 @@ export default function App() {
         setDashArray(calculateDashArray());
     }, [counter]);
 
+    React.useEffect(() => {
+        if (startTime !== null) {
+            startInterval();
+        }
+    }, [startTime]);
+
+    const startInterval = () => {
+        clearInterval(intervalRef.current);
+
+        intervalRef.current = setInterval(() => {
+            setTotalTime((prevTotalTime) => prevTotalTime + 1000);
+        }, 1000);
+    };
+
+
+    const renderRoundTimes = () => {
+        return roundTimes.map((time, index) => (
+            <View key={index} style={styles.roundTimeItem}>
+                <RNText style={styles.roundTimeText}>Round {index + 1}:</RNText>
+                <RNText style={styles.roundTimeText}>{formatTime(time)}</RNText>
+            </View>
+        ));
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={{ flex: 1 }}>
@@ -67,24 +131,23 @@ export default function App() {
                             strokeDasharray={dashArray}
                             transform="rotate(-90) translate(-20)"
                         />
-                        <SvgText x="50%" y="50%" fontSize="5" fontWeight="bold" fill="white" textAnchor="middle">
+                        <SvgText x="53%" y="55%" fontSize="5" fontWeight="bold" fill="white" textAnchor="middle">
                             {counter}
                         </SvgText>
                     </Svg>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={handleReset} style={[styles.counterButton, { backgroundColor: 'white' }]}>
-                            <Text style={styles.buttonText}>Reset</Text>
+                            <RNText style={styles.buttonText}>Reset</RNText>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={handleNextPress} style={styles.counterButton}>
-                            <Text style={styles.buttonText}>{buttonText}</Text>
+                            <RNText style={styles.buttonText}>{buttonText}</RNText>
                         </TouchableOpacity>
                     </View>
                     <View>
-                        <Text>Test</Text>
-                        <Text>Test</Text>
+                        <RNText style={styles.totalTimeHeader}>Total Time:</RNText>
+                        <RNText style={styles.roundTimeText}>{formatTime(totalTime)}</RNText>
+                        {renderRoundTimes()}
                     </View>
-                    <Text>Test</Text>
-                    <View style={styles.totalTimeContainer}></View>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -118,5 +181,24 @@ const styles = StyleSheet.create({
     },
     totalTimeContainer: {
         marginTop: 20,
+        alignItems: 'center',
+        color: "white",
+    },
+    totalTimeHeader: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        color: "white",
+    },
+    roundTimeItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 5,
+        color: "white",
+    },
+    roundTimeText: {
+        color: 'white',
     },
 });
+
+
