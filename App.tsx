@@ -45,7 +45,6 @@ export default function App() {
             const endTime = new Date();
             const roundTime = endTime - startTime;
             setRoundTimes((prevRoundTimes) => [...prevRoundTimes, roundTime]);
-
             setCounter((prevCounter) => prevCounter + 1);
             if (counter === 6) {
                 setButtonText('Finish');
