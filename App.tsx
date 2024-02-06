@@ -17,10 +17,10 @@ export default function App() {
     const [counter, setCounter] = React.useState(0);
     const [buttonText, setButtonText] = React.useState('Start');
     const [dashArray, setDashArray] = React.useState('0 31.4');
-    const [startTime, setStartTime] = React.useState(null);
-    const [roundTimes, setRoundTimes] = React.useState([]);
+    const [startTime, setStartTime] = React.useState<Date | null>(null);
+    const [roundTimes, setRoundTimes] = React.useState<number[]>([]);
     const [totalTime, setTotalTime] = React.useState(0);
-    const intervalRef = React.useRef(null);
+    const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
 
     const formatTime = (milliseconds: number) => {
         const totalSeconds = Math.abs(Math.floor(milliseconds / 1000));
@@ -45,12 +45,15 @@ export default function App() {
     const handleNextPress = () => {
         if (counter < 7) {
             const endTime = new Date();
-            const roundTime = endTime - startTime;
+            const roundTime = endTime.getTime() - startTime!.getTime();
+
             setRoundTimes((prevRoundTimes) => [...prevRoundTimes, roundTime]);
             setCounter((prevCounter) => prevCounter + 1);
             if (counter === 6) {
                 setButtonText('Finish');
-                clearInterval(intervalRef.current);
+                if (intervalRef.current !== null) {
+                    clearInterval(intervalRef.current);
+                }
             } else {
                 setStartTime(new Date());
             }
@@ -59,9 +62,12 @@ export default function App() {
 
     const handleFinishPress = () => {
         const endTime = new Date();
-        const roundTime = endTime - startTime;
+        const roundTime = endTime.getTime() - startTime!.getTime();
+
         setRoundTimes((prevRoundTimes) => [...prevRoundTimes, roundTime]);
-        clearInterval(intervalRef.current);
+        if (intervalRef.current !== null) {
+            clearInterval(intervalRef.current);
+        }
         setCounter(8);
     };
 
@@ -71,7 +77,9 @@ export default function App() {
         setStartTime(null);
         setRoundTimes([]);
         setTotalTime(0);
-        clearInterval(intervalRef.current);
+        if (intervalRef.current !== null) {
+            clearInterval(intervalRef.current);
+        }
     };
 
     const calculateDashArray = () => {
@@ -100,12 +108,15 @@ export default function App() {
     }, [startTime]);
 
     const startInterval = () => {
-        clearInterval(intervalRef.current);
+        if (intervalRef.current !== null) {
+            clearInterval(intervalRef.current);
+        }
 
         intervalRef.current = setInterval(() => {
             setTotalTime((prevTotalTime) => prevTotalTime + 1000);
         }, 1000);
     };
+
 
     const renderRoundTimes = () => {
         return roundTimes.map((time, index) => (
