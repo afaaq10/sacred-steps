@@ -11,7 +11,7 @@ import { View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, ImageBack
 import Svg, { Circle, Text as SvgText } from 'react-native-svg';
 import { Colors } from './src/colors/colors';
 
-const backgroundImage = require('./assets/splash.png');
+const backgroundImage = require('./assets/mataf.jpg');
 
 export default function App() {
     const [counter, setCounter] = React.useState(0);
@@ -22,7 +22,7 @@ export default function App() {
     const [totalTime, setTotalTime] = React.useState(0);
     const intervalRef = React.useRef(null);
 
-    const formatTime = (milliseconds) => {
+    const formatTime = (milliseconds: number) => {
         const totalSeconds = Math.abs(Math.floor(milliseconds / 1000));
         const hours = Math.floor(totalSeconds / 3600);
         const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -58,12 +58,10 @@ export default function App() {
     };
 
     const handleFinishPress = () => {
-        // Capture the time taken for the 7th round
         const endTime = new Date();
         const roundTime = endTime - startTime;
         setRoundTimes((prevRoundTimes) => [...prevRoundTimes, roundTime]);
         clearInterval(intervalRef.current);
-        // Set counter to a value greater than 7 to only display the reset button
         setCounter(8);
     };
 
@@ -122,9 +120,11 @@ export default function App() {
         <SafeAreaView style={styles.container}>
             {counter === 0 ? (
                 <ImageBackground source={backgroundImage} style={styles.imageBackground}>
-                    <TouchableOpacity onPress={handleStartPress} style={styles.startButton}>
-                        <RNText style={styles.startButtonText}>Start</RNText>
-                    </TouchableOpacity>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity onPress={handleStartPress} style={styles.startButton}>
+                            <RNText style={styles.startButtonText}>Bismillah</RNText>
+                        </TouchableOpacity>
+                    </View>
                 </ImageBackground>
             ) : (
                 <ScrollView style={{ flex: 1 }}>
@@ -144,7 +144,7 @@ export default function App() {
                                 />
                             )}
                             <SvgText x="53%" y="55%" fontSize="5" fontWeight="bold" fill="white" textAnchor="middle">
-                                {counter}
+                                {counter > 0 && counter <= 7 ? counter : 0}
                             </SvgText>
                         </Svg>
                         <View style={styles.buttonContainer}>
@@ -164,12 +164,12 @@ export default function App() {
                                 </>
                             )}
                         </View>
-                        <View>
+                        <View style={{ flexDirection: "row", alignItems: "baseline", gap: 24 }}>
                             <RNText style={styles.totalTimeHeader}>Total Time:</RNText>
                             <RNText style={styles.roundTimeText}>{formatTime(totalTime)}</RNText>
-                            {renderRoundTimes()}
                         </View>
                     </View>
+                    {renderRoundTimes()}
                 </ScrollView>
             )}
         </SafeAreaView>
@@ -180,24 +180,27 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         gap: 20,
-        padding: 16,
         backgroundColor: Colors.Dark,
     },
     imageBackground: {
         flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'center',
+        opacity: 0.8,
+        backgroundColor: Colors.Light
     },
     startButton: {
-        backgroundColor: 'yellow',
-        padding: 20,
-        borderRadius: 10,
+        backgroundColor: Colors.BLUE_GREEN,
+        padding: 9,
+        borderRadius: 16,
         marginBottom: 30,
+        width: "50%",
     },
     startButtonText: {
-        color: 'black',
+        color: 'white',
         fontSize: 18,
         fontWeight: 'bold',
+        textAlign: "center",
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -217,22 +220,22 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
-    totalTimeContainer: {
-        marginTop: 20,
-        alignItems: 'center',
-        color: "white",
-    },
+
     totalTimeHeader: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: 'bold',
-        marginBottom: 10,
         color: "white",
+
     },
     roundTimeItem: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 5,
+        justifyContent: 'space-around',
+        marginTop: 25,
         color: "white",
+        backgroundColor: Colors.BLACK_LIGHT,
+        gap: 59,
+        borderRadius: 15,
+        padding: 5
     },
     roundTimeText: {
         color: 'white',
