@@ -151,7 +151,7 @@ export default function App() {
                                     cx="10"
                                     cy="10"
                                     fill="transparent"
-                                    stroke="tomato"
+                                    stroke={Colors.ORANGE_MEDIUM}
                                     strokeWidth="10"
                                     strokeDasharray={dashArray}
                                     transform="rotate(-90) translate(-20)"
@@ -200,7 +200,9 @@ const styles = StyleSheet.create({
     title: {
         color: Colors.WHITE,
         textAlign: "center",
-        marginTop: 55
+        marginTop: 55,
+        fontSize: 25,
+        // fontFamily: "Helvetica",
     },
     imageBackground: {
         flex: 1,
@@ -251,16 +253,14 @@ const styles = StyleSheet.create({
     roundTimeItem: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 27,
+        marginTop: 21,
         color: "white",
         width: 290,
         height: 36,
         borderWidth: 1,
         borderColor: Colors.ORANGE_LIGHT,
-        gap: 59,
         borderRadius: 7,
         padding: 5,
-        elevation: 7
     },
     roundTimeText: {
         color: 'white',

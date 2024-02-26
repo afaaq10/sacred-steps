@@ -14,6 +14,7 @@ export const Colors = {
     DARK_MEDIUM: "#222326",
     ORANGE_DARK: "#904840",
     ORANGE_LIGHT: "#54454F",
+    ORANGE_MEDIUM: "#BA524A",
     GRADIENT_LIGHT: "#57C5B6",
     GRADIENT_DARK: "#1A5F7A",
     BLACK_DARK: "#333333",
