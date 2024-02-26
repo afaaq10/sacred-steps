@@ -8,9 +8,12 @@
 
 export const Colors = {
     Light: '#DBEDF3',
-    Dark: '#283149',
+    Dark: '#1E1E1E',
     Gray: '#404B69',
     WHITE: "#FFFFFF",
+    DARK_MEDIUM: "#222326",
+    ORANGE_DARK: "#904840",
+    ORANGE_LIGHT: "#54454F",
     GRADIENT_LIGHT: "#57C5B6",
     GRADIENT_DARK: "#1A5F7A",
     BLACK_DARK: "#333333",

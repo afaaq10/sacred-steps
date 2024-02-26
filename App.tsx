@@ -121,14 +121,17 @@ export default function App() {
     const renderRoundTimes = () => {
         return roundTimes.map((time, index) => (
             <View key={index} style={styles.roundTimeItem}>
-                <RNText style={styles.roundTimeText}>Round {index + 1}:</RNText>
-                <RNText style={styles.roundTimeText}>{formatTime(time)}</RNText>
+                <RNText style={styles.roundTimeCard}>Round {index + 1}:</RNText>
+                <RNText style={styles.roundTimeCard}>{formatTime(time)}</RNText>
             </View>
         ));
     };
 
     return (
         <SafeAreaView style={styles.container}>
+            <View>
+                <RNText style={styles.title}>Sacred Steps</RNText>
+            </View>
             {counter === 0 ? (
                 <ImageBackground source={backgroundImage} style={styles.imageBackground}>
                     <View style={styles.buttonContainer}>
@@ -139,9 +142,9 @@ export default function App() {
                 </ImageBackground>
             ) : (
                 <ScrollView style={{ flex: 1 }}>
-                    <View style={{ justifyContent: 'center', alignItems: 'center', gap: 65, marginTop: 85 }}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', gap: 25, marginTop: 45 }}>
                         <Svg height="170" width="170" viewBox="0 0 20 20">
-                            <Circle r="5" cx="10" cy="10" fill={Colors.Dark} stroke={Colors.Gray} strokeWidth="10" />
+                            <Circle r="5" cx="10" cy="10" fill={Colors.Dark} stroke={Colors.DARK_MEDIUM} strokeWidth="10" />
                             {counter > 0 && (
                                 <Circle
                                     r="5"
@@ -160,23 +163,23 @@ export default function App() {
                         </Svg>
                         <View style={styles.buttonContainer}>
                             {counter === 8 && (
-                                <TouchableOpacity onPress={handleReset} style={[styles.counterButton, { backgroundColor: 'white' }]}>
+                                <TouchableOpacity onPress={handleReset} style={[styles.counterButton, { backgroundColor: Colors.DARK_MEDIUM }]}>
                                     <RNText style={styles.buttonText}>Reset</RNText>
                                 </TouchableOpacity>
                             )}
                             {counter < 8 && (
                                 <>
-                                    <TouchableOpacity onPress={handleReset} style={[styles.counterButton, { backgroundColor: 'white' }]}>
+                                    <TouchableOpacity onPress={handleReset} style={[styles.counterButton, { backgroundColor: Colors.DARK_MEDIUM }]}>
                                         <RNText style={styles.buttonText}>Reset</RNText>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={counter === 7 ? handleFinishPress : handleNextPress} style={styles.counterButton}>
+                                    <TouchableOpacity onPress={counter === 7 ? handleFinishPress : handleNextPress} style={[styles.counterButton, { backgroundColor: Colors.ORANGE_DARK }]}>
                                         <RNText style={styles.buttonText}>{buttonText}</RNText>
                                     </TouchableOpacity>
                                 </>
                             )}
                         </View>
-                        <View style={{ flexDirection: "row", alignItems: "baseline", gap: 24 }}>
-                            <RNText style={styles.totalTimeHeader}>Total Time:</RNText>
+                        <View style={{ flexDirection: "row", alignItems: "baseline", gap: 7 }}>
+                            <RNText style={styles.totalTimeHeader}>Total Time :</RNText>
                             <RNText style={styles.roundTimeText}>{formatTime(totalTime)}</RNText>
                         </View>
                     </View>
@@ -190,8 +193,14 @@ export default function App() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        gap: 20,
         backgroundColor: Colors.Dark,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    title: {
+        color: Colors.WHITE,
+        textAlign: "center",
+        marginTop: 55
     },
     imageBackground: {
         flex: 1,
@@ -219,36 +228,47 @@ const styles = StyleSheet.create({
         gap: 30,
     },
     counterButton: {
-        backgroundColor: 'yellow',
         padding: 9,
-        borderRadius: 15,
-        width: 115,
-        color: 'black',
+        borderRadius: 22,
+        width: 128,
+        height: 42,
+        borderWidth: 1,
+        borderColor: Colors.ORANGE_DARK,
+        elevation: 7,
     },
     buttonText: {
-        color: 'black',
+        color: 'white',
         textAlign: 'center',
         fontSize: 16,
-        fontWeight: 'bold',
     },
 
     totalTimeHeader: {
-        fontSize: 16,
+        fontSize: 20,
         fontWeight: 'bold',
         color: "white",
 
     },
     roundTimeItem: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginTop: 25,
+        justifyContent: 'space-between',
+        marginTop: 27,
         color: "white",
-        backgroundColor: Colors.BLACK_LIGHT,
+        width: 290,
+        height: 36,
+        borderWidth: 1,
+        borderColor: Colors.ORANGE_LIGHT,
         gap: 59,
-        borderRadius: 15,
-        padding: 5
+        borderRadius: 7,
+        padding: 5,
+        elevation: 7
     },
     roundTimeText: {
         color: 'white',
+        fontSize: 20,
+        fontWeight: 'bold',
     },
+    roundTimeCard: {
+        color: 'white',
+        fontSize: 14,
+    }
 });
