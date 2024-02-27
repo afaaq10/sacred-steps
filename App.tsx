@@ -170,7 +170,7 @@ export default function App() {
                 </View>
                 // </ImageBackground>
             ) : (
-                <ScrollView style={{ flex: 1, padding: 24, width: '100%' }}>
+                <ScrollView style={{ flex: 1, padding: 8, width: '100%' }}>
                     <Text style={styles.title}>Sacred Steps</Text>
                     <View style={{ justifyContent: 'center', alignItems: 'center', gap: 12, marginVertical: 12 }}>
                         <Svg height="160" width="160" viewBox="0 0 20 20">
