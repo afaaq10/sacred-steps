@@ -8,7 +8,7 @@
 
 import React from 'react';
 import { useFonts } from 'expo-font';
-import { View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, ImageBackground, Text as RNText } from 'react-native';
+import { View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, ImageBackground, Text as RNText, Animated } from 'react-native';
 import Svg, { Circle, Text as SvgText } from 'react-native-svg';
 import { Colors } from './src/colors/colors';
 import { Fonts } from './src/colors/utils/fonts';
@@ -20,6 +20,8 @@ export default function App() {
     const [fontsLoaded] = useFonts({
         [Fonts.JosefinSlabSemiBold]: require('./assets/fonts/Josefin_Slab/JosefinSlab-SemiBold.ttf'),
     });
+
+    const bounceAnimation = React.useRef(new Animated.Value(0)).current;
 
     const [counter, setCounter] = React.useState(0);
     const [buttonText, setButtonText] = React.useState('Start');
@@ -69,6 +71,7 @@ export default function App() {
     };
 
     const handleFinishPress = () => {
+        startBounceAnimation();
         const endTime = new Date();
         const roundTime = endTime.getTime() - startTime!.getTime();
 
@@ -80,6 +83,7 @@ export default function App() {
     };
 
     const handleReset = () => {
+        startBounceAnimation();
         setCounter(0);
         setButtonText('Start');
         setStartTime(null);
@@ -115,6 +119,21 @@ export default function App() {
         }
     }, [startTime]);
 
+    React.useEffect(() => {
+        if (fontsLoaded) {
+            startBounceAnimation();
+        }
+    }, [fontsLoaded]);
+
+    const startBounceAnimation = () => {
+        Animated.loop(
+            Animated.sequence([
+                Animated.timing(bounceAnimation, { toValue: 1, duration: 500, useNativeDriver: false }),
+                Animated.timing(bounceAnimation, { toValue: 0, duration: 500, useNativeDriver: false }),
+            ]),
+        ).start();
+    };
+
     const startInterval = () => {
         if (intervalRef.current !== null) {
             clearInterval(intervalRef.current);
@@ -142,11 +161,11 @@ export default function App() {
 
             {counter === 0 ? (
                 // <ImageBackground source={backgroundImage} style={styles.imageBackground}>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity onPress={handleStartPress} style={styles.startButton}>
-                        <RNText style={styles.startButtonText}>Bismillah</RNText>
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity onPress={handleStartPress}>
+                    <Animated.View style={[styles.animationContainer, { transform: [{ translateY: bounceAnimation.interpolate({ inputRange: [0, 1], outputRange: [0, -20] }) }] }]}>
+                        <RNText style={styles.startText} onPress={handleStartPress}>Bismillah</RNText>
+                    </Animated.View>
+                </TouchableOpacity>
                 // </ImageBackground>
             ) : (
                 <ScrollView style={{ flex: 1 }}>
@@ -196,8 +215,9 @@ export default function App() {
                     </View>
                     {renderRoundTimes()}
                 </ScrollView>
-            )}
-        </SafeAreaView>
+            )
+            }
+        </SafeAreaView >
     );
 }
 
@@ -207,6 +227,17 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.Dark,
         justifyContent: "center",
         alignItems: "center",
+    },
+
+    animationContainer: {
+        backgroundColor: Colors.BLUE_GREEN,
+        padding: 20,
+        borderRadius: 16,
+    },
+    startText: {
+        color: 'white',
+        fontSize: 28,
+        fontFamily: Fonts.JosefinSlabSemiBold,
     },
     title: {
         color: Colors.WHITE,
