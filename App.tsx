@@ -57,8 +57,10 @@ export default function App() {
 
             setRoundTimes((prevRoundTimes) => [...prevRoundTimes, roundTime]);
             setCounter((prevCounter) => prevCounter + 1);
+
             if (counter === 6) {
                 setButtonText('Finish');
+
                 if (intervalRef.current !== null) {
                     clearInterval(intervalRef.current);
                 }
@@ -79,6 +81,7 @@ export default function App() {
             clearInterval(intervalRef.current);
         }
 
+        setTotalTime(roundTimes.reduce((a, v) => a + v));
         setCounter(8);
     };
 
@@ -99,8 +102,9 @@ export default function App() {
         const totalSegments = 7;
         const circumference = 31.4;
 
-        if (counter === 0) return '0 31.4';
-        else if (counter < totalSegments) {
+        if (counter === 0) {
+            return '0 31.4';
+        } else if (counter < totalSegments) {
             const segmentSize = circumference / totalSegments;
             const filledLength = segmentSize * counter;
             const remainingLength = circumference - filledLength;
@@ -191,6 +195,11 @@ export default function App() {
                                 {counter > 0 && counter <= 7 && counter}
                                 {counter > 7 && '-'}
                             </SvgText>
+                            {counter > 0 &&
+                                <SvgText x="50%" y="75%" fontSize="2" fontWeight="bold" fill="white" textAnchor="middle">
+                                    {formatTime(totalTime)}
+                                </SvgText>
+                            }
                         </Svg>
                         <View style={styles.buttonContainer}>
                             {counter === 8 &&
@@ -209,10 +218,6 @@ export default function App() {
                                 </>
                             }
                         </View>
-                        <View style={{ flexDirection: "row", alignItems: "baseline", gap: 8, marginVertical: 8 }}>
-                            <Text style={styles.totalTimeHeader}>Total Time:</Text>
-                            <Text style={styles.roundTimeText}>{formatTime(totalTime)}</Text>
-                        </View>
                     </View>
                     <View style={{ gap: 8 }}>{renderRoundTimes()}</View>
                 </ScrollView>
@@ -230,7 +235,7 @@ const styles = StyleSheet.create({
     },
     animationContainer: {
         backgroundColor: Colors.BLUE_GREEN,
-        padding: 20,
+        padding: 16,
         borderRadius: 16,
     },
     startText: {
@@ -255,19 +260,6 @@ const styles = StyleSheet.create({
         opacity: 0.8,
         backgroundColor: Colors.Light
     },
-    startButton: {
-        backgroundColor: Colors.BLUE_GREEN,
-        padding: 9,
-        borderRadius: 16,
-        marginBottom: 30,
-        width: '50%',
-    },
-    startButtonText: {
-        color: 'white',
-        fontSize: 18,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -279,7 +271,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 16,
         paddingHorizontal: 32,
-        borderRadius: 24,
+        borderRadius: 48,
         borderWidth: 1,
         borderColor: Colors.ORANGE_DARK,
         elevation: 6,
