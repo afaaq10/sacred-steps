@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
         color: Colors.WHITE,
         textAlign: 'center',
         marginTop: 12,
-        fontSize: 50,
+        fontSize: 42,
         fontFamily: Fonts.JosefinSlabSemiBold,
         textShadowColor: Colors.ORANGE_DARK,
         textShadowOffset: { width: 2, height: 2 },
