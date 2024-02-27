@@ -54,9 +54,10 @@ export default function App() {
                 if (intervalRef.current !== null) {
                     clearInterval(intervalRef.current);
                 }
-            } else {
-                setStartTime(new Date());
             }
+            setStartTime(new Date());
+            startInterval();
+
         }
     };
 
@@ -129,19 +130,20 @@ export default function App() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View>
-                <RNText style={styles.title}>Sacred Steps</RNText>
-            </View>
+
             {counter === 0 ? (
-                <ImageBackground source={backgroundImage} style={styles.imageBackground}>
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity onPress={handleStartPress} style={styles.startButton}>
-                            <RNText style={styles.startButtonText}>Bismillah</RNText>
-                        </TouchableOpacity>
-                    </View>
-                </ImageBackground>
+                // <ImageBackground source={backgroundImage} style={styles.imageBackground}>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={handleStartPress} style={styles.startButton}>
+                        <RNText style={styles.startButtonText}>Bismillah</RNText>
+                    </TouchableOpacity>
+                </View>
+                // </ImageBackground>
             ) : (
                 <ScrollView style={{ flex: 1 }}>
+                    <View>
+                        <RNText style={styles.title}>Sacred Steps</RNText>
+                    </View>
                     <View style={{ justifyContent: 'center', alignItems: 'center', gap: 25, marginTop: 45 }}>
                         <Svg height="170" width="170" viewBox="0 0 20 20">
                             <Circle r="5" cx="10" cy="10" fill={Colors.Dark} stroke={Colors.DARK_MEDIUM} strokeWidth="10" />
