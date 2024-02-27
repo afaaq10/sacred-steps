@@ -1,9 +1,9 @@
 /**
- * sacred-steps
+ * Sacred Steps
  *
- * @author Afaaq Majeed
- *
- * @copyright 2024 Afaq Majeed
+ * @author    Afaaq Majeed
+ * @link      https://github.com/afaaq10/sacred-steps
+ * @copyright 2024 Afaaq Majeed
  */
 
 export const Fonts = {

@@ -1,14 +1,14 @@
 /**
-* sacred-steps
-*
-* @author Afaaq Majeed
-*
-* @copyright 2024 Afaaq Majeed
-*/
+ * Sacred Steps
+ *
+ * @author    Afaaq Majeed
+ * @link      https://github.com/afaaq10/sacred-steps
+ * @copyright 2024 Afaaq Majeed
+ */
 
 import React from 'react';
+import { View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, Text, Animated } from 'react-native';
 import { useFonts } from 'expo-font';
-import { View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, ImageBackground, Text as RNText, Animated } from 'react-native';
 import Svg, { Circle, Text as SvgText } from 'react-native-svg';
 import { Colors } from './src/colors/colors';
 import { Fonts } from './src/colors/utils/fonts';
@@ -16,7 +16,6 @@ import { Fonts } from './src/colors/utils/fonts';
 const backgroundImage = require('./assets/mataf.jpg');
 
 export default function App() {
-
     const [fontsLoaded] = useFonts({
         [Fonts.JosefinSlabSemiBold]: require('./assets/fonts/Josefin_Slab/JosefinSlab-SemiBold.ttf'),
     });
@@ -64,9 +63,9 @@ export default function App() {
                     clearInterval(intervalRef.current);
                 }
             }
+
             setStartTime(new Date());
             startInterval();
-
         }
     };
 
@@ -79,6 +78,7 @@ export default function App() {
         if (intervalRef.current !== null) {
             clearInterval(intervalRef.current);
         }
+
         setCounter(8);
     };
 
@@ -89,6 +89,7 @@ export default function App() {
         setStartTime(null);
         setRoundTimes([]);
         setTotalTime(0);
+
         if (intervalRef.current !== null) {
             clearInterval(intervalRef.current);
         }
@@ -144,12 +145,11 @@ export default function App() {
         }, 1000);
     };
 
-
     const renderRoundTimes = () => {
         return roundTimes.map((time, index) => (
             <View key={index} style={styles.roundTimeItem}>
-                <RNText style={styles.roundTimeCard}>Round {index + 1}:</RNText>
-                <RNText style={styles.roundTimeCard}>{formatTime(time)}</RNText>
+                <Text style={styles.roundTimeCard}>Round {index + 1}</Text>
+                <Text style={styles.roundTimeCard}>{formatTime(time)}</Text>
             </View>
         ));
     };
@@ -158,22 +158,22 @@ export default function App() {
 
     return (
         <SafeAreaView style={styles.container}>
-
             {counter === 0 ? (
                 // <ImageBackground source={backgroundImage} style={styles.imageBackground}>
-                <TouchableOpacity onPress={handleStartPress}>
-                    <Animated.View style={[styles.animationContainer, { transform: [{ translateY: bounceAnimation.interpolate({ inputRange: [0, 1], outputRange: [0, -20] }) }] }]}>
-                        <RNText style={styles.startText} onPress={handleStartPress}>Bismillah</RNText>
-                    </Animated.View>
-                </TouchableOpacity>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 48 }}>
+                    <Text style={styles.title}>Sacred Steps</Text>
+                    <TouchableOpacity onPress={handleStartPress}>
+                        <Animated.View style={[styles.animationContainer, { transform: [{ translateY: bounceAnimation.interpolate({ inputRange: [0, 1], outputRange: [0, -20] }) }] }]}>
+                            <Text style={styles.startText} onPress={handleStartPress}>Bismillah</Text>
+                        </Animated.View>
+                    </TouchableOpacity>
+                </View>
                 // </ImageBackground>
             ) : (
-                <ScrollView style={{ flex: 1 }}>
-                    <View>
-                        <RNText style={styles.title}>Sacred Steps</RNText>
-                    </View>
-                    <View style={{ justifyContent: 'center', alignItems: 'center', gap: 25, marginTop: 45 }}>
-                        <Svg height="170" width="170" viewBox="0 0 20 20">
+                <ScrollView style={{ flex: 1, padding: 24, width: '100%' }}>
+                    <Text style={styles.title}>Sacred Steps</Text>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', gap: 12, marginVertical: 12 }}>
+                        <Svg height="160" width="160" viewBox="0 0 20 20">
                             <Circle r="5" cx="10" cy="10" fill={Colors.Dark} stroke={Colors.DARK_MEDIUM} strokeWidth="10" />
                             {counter > 0 && (
                                 <Circle
@@ -187,37 +187,37 @@ export default function App() {
                                     transform="rotate(-90) translate(-20)"
                                 />
                             )}
-                            <SvgText x="53%" y="55%" fontSize="5" fontWeight="bold" fill="white" textAnchor="middle">
-                                {counter > 0 && counter <= 7 ? counter : 0}
+                            <SvgText x="50%" y="58%" fontSize="5" fontWeight="bold" fill="white" textAnchor="middle">
+                                {counter > 0 && counter <= 7 && counter}
+                                {counter > 7 && '-'}
                             </SvgText>
                         </Svg>
                         <View style={styles.buttonContainer}>
-                            {counter === 8 && (
+                            {counter === 8 &&
                                 <TouchableOpacity onPress={handleReset} style={[styles.counterButton, { backgroundColor: Colors.DARK_MEDIUM }]}>
-                                    <RNText style={styles.buttonText}>Reset</RNText>
+                                    <Text style={styles.buttonText}>Reset</Text>
                                 </TouchableOpacity>
-                            )}
-                            {counter < 8 && (
+                            }
+                            {counter < 8 &&
                                 <>
                                     <TouchableOpacity onPress={handleReset} style={[styles.counterButton, { backgroundColor: Colors.DARK_MEDIUM }]}>
-                                        <RNText style={styles.buttonText}>Reset</RNText>
+                                        <Text style={styles.buttonText}>Reset</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={counter === 7 ? handleFinishPress : handleNextPress} style={[styles.counterButton, { backgroundColor: Colors.ORANGE_DARK }]}>
-                                        <RNText style={styles.buttonText}>{buttonText}</RNText>
+                                        <Text style={styles.buttonText}>{buttonText}</Text>
                                     </TouchableOpacity>
                                 </>
-                            )}
+                            }
                         </View>
-                        <View style={{ flexDirection: "row", alignItems: "baseline", gap: 7 }}>
-                            <RNText style={styles.totalTimeHeader}>Total Time :</RNText>
-                            <RNText style={styles.roundTimeText}>{formatTime(totalTime)}</RNText>
+                        <View style={{ flexDirection: "row", alignItems: "baseline", gap: 8, marginVertical: 8 }}>
+                            <Text style={styles.totalTimeHeader}>Total Time:</Text>
+                            <Text style={styles.roundTimeText}>{formatTime(totalTime)}</Text>
                         </View>
                     </View>
-                    {renderRoundTimes()}
+                    <View style={{ gap: 8 }}>{renderRoundTimes()}</View>
                 </ScrollView>
-            )
-            }
-        </SafeAreaView >
+            )}
+        </SafeAreaView>
     );
 }
 
@@ -225,10 +225,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.Dark,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 100,
     },
-
     animationContainer: {
         backgroundColor: Colors.BLUE_GREEN,
         padding: 20,
@@ -241,9 +241,9 @@ const styles = StyleSheet.create({
     },
     title: {
         color: Colors.WHITE,
-        textAlign: "center",
-        marginTop: 55,
-        fontSize: 29,
+        textAlign: 'center',
+        marginTop: 12,
+        fontSize: 50,
         fontFamily: Fonts.JosefinSlabSemiBold,
         textShadowColor: Colors.ORANGE_DARK,
         textShadowOffset: { width: 2, height: 2 },
@@ -261,59 +261,58 @@ const styles = StyleSheet.create({
         padding: 9,
         borderRadius: 16,
         marginBottom: 30,
-        width: "50%",
+        width: '50%',
     },
     startButtonText: {
         color: 'white',
         fontSize: 18,
         fontWeight: 'bold',
-        textAlign: "center",
+        textAlign: 'center',
     },
     buttonContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        gap: 30,
+        justifyContent: 'space-between',
+        gap: 16,
     },
     counterButton: {
-        padding: 9,
-        borderRadius: 22,
-        width: 128,
-        height: 42,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 16,
+        paddingHorizontal: 32,
+        borderRadius: 24,
         borderWidth: 1,
         borderColor: Colors.ORANGE_DARK,
-        elevation: 7,
+        elevation: 6,
     },
     buttonText: {
         color: 'white',
         textAlign: 'center',
-        fontSize: 16,
+        fontSize: 20,
     },
-
     totalTimeHeader: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: "white",
-
+        color: 'white',
     },
     roundTimeItem: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 21,
-        color: "white",
-        width: 290,
-        height: 36,
+        alignItems: 'center',
+        color: 'white',
+        width: '100%',
         borderWidth: 1,
         borderColor: Colors.ORANGE_LIGHT,
-        borderRadius: 7,
-        padding: 5,
+        borderRadius: 4,
+        padding: 12,
     },
     roundTimeText: {
         color: 'white',
-        fontSize: 20,
+        fontSize: 24,
         fontWeight: 'bold',
     },
     roundTimeCard: {
         color: 'white',
-        fontSize: 14,
+        fontSize: 18,
     }
 });
