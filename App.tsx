@@ -12,6 +12,7 @@ import { useFonts } from 'expo-font';
 import Svg, { Circle, Text as SvgText } from 'react-native-svg';
 import { Colors } from './src/colors/colors';
 import { Fonts } from './src/colors/utils/fonts';
+import { StatusBar } from 'expo-status-bar';
 
 const backgroundImage = require('./assets/mataf.jpg');
 
@@ -162,6 +163,7 @@ export default function App() {
 
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar style="light" />
             {counter === 0 ? (
                 // <ImageBackground source={backgroundImage} style={styles.imageBackground}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 48 }}>

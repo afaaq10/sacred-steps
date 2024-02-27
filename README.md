@@ -1,10 +1,10 @@
 # Sacred Steps
 
-![Screenshot_2024-02-06-19-22-16-35_f73b71075b1de7323614b647fe394240](https://github.com/afaaq10/sacred-steps/assets/87464681/e32baa4a-ef2b-49af-b5cb-113e5bb14620)
-![Screenshot_2024-02-06-19-22-25-30_f73b71075b1de7323614b647fe394240](https://github.com/afaaq10/sacred-steps/assets/87464681/fb155732-aefb-440f-9c05-d21acc4831c3)
+Sacred Steps is a React Native application designed to assist users in tracking their progress during circumambulation of the holy Ka'aba. It allows users to record and monitor their time for each round, providing insights into their worship.
 
+![Sacred Steps](./screenshots/sacred-steps.png)
 
-Sacred Steps is a React Native application designed to assist users in tracking their progress during circumambulation of the holy Ka'aba. It allows users to record and monitor their time for each round, providing insights into their performance.
+---
 
 ## Features
 
