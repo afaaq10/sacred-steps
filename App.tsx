@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     title: {
         color: Colors.WHITE,
         textAlign: 'center',
-        marginTop: 12,
+        marginTop: 20,
         fontSize: 42,
         fontFamily: Fonts.JosefinSlabSemiBold,
         textShadowColor: Colors.ORANGE_DARK,
