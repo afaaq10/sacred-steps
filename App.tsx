@@ -7,13 +7,20 @@
 */
 
 import React from 'react';
+import { useFonts } from 'expo-font';
 import { View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, ImageBackground, Text as RNText } from 'react-native';
 import Svg, { Circle, Text as SvgText } from 'react-native-svg';
 import { Colors } from './src/colors/colors';
+import { Fonts } from './src/colors/utils/fonts';
 
 const backgroundImage = require('./assets/mataf.jpg');
 
 export default function App() {
+
+    const [fontsLoaded] = useFonts({
+        [Fonts.JosefinSlabSemiBold]: require('./assets/fonts/Josefin_Slab/JosefinSlab-SemiBold.ttf'),
+    });
+
     const [counter, setCounter] = React.useState(0);
     const [buttonText, setButtonText] = React.useState('Start');
     const [dashArray, setDashArray] = React.useState('0 31.4');
@@ -128,6 +135,8 @@ export default function App() {
         ));
     };
 
+    if (!fontsLoaded) return null;
+
     return (
         <SafeAreaView style={styles.container}>
 
@@ -203,8 +212,11 @@ const styles = StyleSheet.create({
         color: Colors.WHITE,
         textAlign: "center",
         marginTop: 55,
-        fontSize: 25,
-        // fontFamily: "Helvetica",
+        fontSize: 29,
+        fontFamily: Fonts.JosefinSlabSemiBold,
+        textShadowColor: Colors.ORANGE_DARK,
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 5,
     },
     imageBackground: {
         flex: 1,
