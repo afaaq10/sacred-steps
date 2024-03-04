@@ -14,8 +14,6 @@ import { Colors } from './src/colors/colors';
 import { Fonts } from './src/colors/utils/fonts';
 import { StatusBar } from 'expo-status-bar';
 
-const backgroundImage = require('./assets/mataf.jpg');
-
 export default function App() {
     const [fontsLoaded] = useFonts({
         [Fonts.JosefinSlabSemiBold]: require('./assets/fonts/Josefin_Slab/JosefinSlab-SemiBold.ttf'),
@@ -165,7 +163,6 @@ export default function App() {
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" />
             {counter === 0 ? (
-                // <ImageBackground source={backgroundImage} style={styles.imageBackground}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 48 }}>
                     <Text style={styles.title}>Sacred Steps</Text>
                     <TouchableOpacity onPress={handleStartPress}>
@@ -174,7 +171,6 @@ export default function App() {
                         </Animated.View>
                     </TouchableOpacity>
                 </View>
-                // </ImageBackground>
             ) : (
                 <ScrollView style={{ flex: 1, padding: 16, width: '100%' }}>
                     <Text style={styles.title}>Sacred Steps</Text>
