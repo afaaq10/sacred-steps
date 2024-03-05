@@ -60,7 +60,6 @@ export default function App() {
 
             if (counter === 6) {
                 setButtonText('Finish');
-
                 if (intervalRef.current !== null) {
                     clearInterval(intervalRef.current);
                 }
@@ -93,7 +92,6 @@ export default function App() {
                 console.error('Error storing data: ', error);
             }
 
-            // Reset roundTimes for the next set
             setRoundTimes([]);
         }
 
