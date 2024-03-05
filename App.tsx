@@ -7,59 +7,13 @@
  */
 
 import React from 'react';
-import { View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, Text, Modal, FlatList, Animated } from 'react-native';
+import { View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, Text, Animated } from 'react-native';
 import { useFonts } from 'expo-font';
 import Svg, { Circle, Text as SvgText } from 'react-native-svg';
 import { Colors } from './src/colors/colors';
 import { Fonts } from './src/colors/utils/fonts';
 import { StatusBar } from 'expo-status-bar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-export const RoundTimesModal = ({ modalVisible, setModalVisible, totalTime, roundTimes, formatTime }) => {
-    return (
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-                setModalVisible(false);
-            }}
-        >
-            <View style={styles.modalContainer}>
-                <TouchableOpacity
-                    style={styles.modalCloseButton}
-                    onPress={() => setModalVisible(false)}
-                >
-                    <Text style={styles.modalCloseButtonText}>Close</Text>
-                </TouchableOpacity>
-                <ScrollView contentContainerStyle={styles.modalContentContainer}>
-                    <TotalTimeCard totalTime={totalTime} formatTime={formatTime} />
-                    <RoundTimesCard roundTimes={roundTimes} formatTime={formatTime} />
-                </ScrollView>
-            </View>
-        </Modal>
-    );
-};
-
-const TotalTimeCard = ({ totalTime, formatTime }) => {
-    return (
-        <View style={styles.modalCard}>
-            <Text style={styles.modalCardTitle}>Total Time</Text>
-            <Text style={styles.modalCardValue}>{formatTime(totalTime)}</Text>
-        </View>
-    );
-};
-
-const RoundTimesCard = ({ roundTimes, formatTime }) => {
-    return (
-        <View style={styles.modalCard}>
-            <Text style={styles.modalCardTitle}>Round Times</Text>
-            {roundTimes.map((time, index) => (
-                <Text key={index} style={styles.modalCardValue}>{`Round ${index + 1}: ${formatTime(time)}`}</Text>
-            ))}
-        </View>
-    );
-};
 
 export default function App() {
     const [fontsLoaded] = useFonts({
@@ -74,9 +28,6 @@ export default function App() {
     const [startTime, setStartTime] = React.useState<Date | null>(null);
     const [roundTimes, setRoundTimes] = React.useState<number[]>([]);
     const [totalTime, setTotalTime] = React.useState(0);
-    const [modalVisible, setModalVisible] = React.useState(false);
-    const [storedRoundTimes, setStoredRoundTimes] = React.useState<number[]>([]);
-
     const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
 
     const formatTime = (milliseconds: number) => {
@@ -126,13 +77,32 @@ export default function App() {
         const roundTime = endTime.getTime() - startTime!.getTime();
 
         setRoundTimes((prevRoundTimes) => [...prevRoundTimes, roundTime]);
+
+        if (counter === 7) {
+            try {
+                const previousSets = await AsyncStorage.getItem('previousSets');
+                const parsedPreviousSets = previousSets ? JSON.parse(previousSets) : [];
+                const currentSet = {
+                    roundTimes,
+                    totalTime,
+                };
+                parsedPreviousSets.push(currentSet);
+
+                await AsyncStorage.setItem('previousSets', JSON.stringify(parsedPreviousSets));
+            } catch (error) {
+                console.error('Error storing data: ', error);
+            }
+
+            // Reset roundTimes for the next set
+            setRoundTimes([]);
+        }
+
         if (intervalRef.current !== null) {
             clearInterval(intervalRef.current);
         }
 
-        setTotalTime(roundTimes.reduce((a, v) => a + v));
+        setTotalTime(0);
         setCounter(8);
-        await AsyncStorage.setItem('roundTimes', JSON.stringify(roundTimes));
     };
 
     const handleReset = () => {
@@ -163,22 +133,6 @@ export default function App() {
             return '31.4 0';
         }
     };
-
-    const handleStoredRoundTimesPress = async () => {
-        try {
-            const storedTimes = await AsyncStorage.getItem('roundTimes');
-            if (storedTimes) {
-                const parsedTimes = JSON.parse(storedTimes);
-                setStoredRoundTimes(parsedTimes);
-                setModalVisible(true);
-            } else {
-                console.log('No stored round times');
-            }
-        } catch (error) {
-            console.error('Error retrieving stored round times:', error);
-        }
-    };
-
 
     React.useEffect(() => {
         setDashArray(calculateDashArray());
@@ -224,18 +178,37 @@ export default function App() {
         ));
     };
 
+    const fetchPreviousSets = async () => {
+        try {
+            const previousSets = await AsyncStorage.getItem('previousSets');
+            return previousSets ? JSON.parse(previousSets) : [];
+        } catch (error) {
+            console.error('Error fetching data: ', error);
+            return [];
+        }
+    };
+
+    const tawafHistory = async () => {
+        const previousSets = await fetchPreviousSets();
+        console.log('Previous Sets: ', previousSets);
+    };
+
     if (!fontsLoaded) return null;
-    console.log("stored round times", storedRoundTimes)
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" />
-            {counter === 0 ? (
+            {counter === 0 || counter === 8 ? (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 48 }}>
                     <Text style={styles.title}>Sacred Steps</Text>
                     <TouchableOpacity onPress={handleStartPress}>
                         <Animated.View style={[styles.animationContainer, { transform: [{ translateY: bounceAnimation.interpolate({ inputRange: [0, 1], outputRange: [0, -20] }) }] }]}>
                             <Text style={styles.startText} onPress={handleStartPress}>Bismillah</Text>
                         </Animated.View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.smallButton} onPress={tawafHistory}>
+                        <Text style={styles.newButtonText}>Tawaf history</Text>
                     </TouchableOpacity>
                 </View>
             ) : (
@@ -268,15 +241,9 @@ export default function App() {
                         </Svg>
                         <View style={styles.buttonContainer}>
                             {counter === 8 &&
-                                <>
-                                    <TouchableOpacity onPress={handleReset} style={[styles.counterButton, { backgroundColor: Colors.DARK_MEDIUM }]}>
-                                        <Text style={styles.buttonText}>Reset</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity onPress={handleStoredRoundTimesPress} style={[styles.counterButton, { backgroundColor: Colors.ORANGE_DARK }]}>
-                                        <Text style={styles.buttonText}>Show Stored Times</Text>
-                                    </TouchableOpacity>
-                                </>
+                                <TouchableOpacity onPress={handleReset} style={[styles.counterButton, { backgroundColor: Colors.DARK_MEDIUM }]}>
+                                    <Text style={styles.buttonText}>Reset</Text>
+                                </TouchableOpacity>
                             }
                             {counter < 8 &&
                                 <>
@@ -293,13 +260,6 @@ export default function App() {
                     <View style={{ gap: 8 }}>{renderRoundTimes()}</View>
                 </ScrollView>
             )}
-            <RoundTimesModal
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-                totalTime={totalTime}
-                roundTimes={roundTimes}
-                formatTime={formatTime}
-            />
         </SafeAreaView>
     );
 }
@@ -384,49 +344,16 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 18,
     },
-    modalContainer: {
-        // flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-    modalItem: {
-        padding: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.WHITE,
-    },
-    modalText: {
-        color: Colors.WHITE,
-        fontSize: 18,
-    },
-    modalCloseButton: {
+    smallButton: {
         backgroundColor: Colors.ORANGE_DARK,
-        padding: 16,
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderRadius: 8,
         marginTop: 16,
     },
-    modalCloseButtonText: {
-        color: Colors.WHITE,
-        fontSize: 18,
+    newButtonText: {
+        color: 'white',
         textAlign: 'center',
-    },
-    modalCard: {
-        backgroundColor: Colors.DARK_MEDIUM,
-        padding: 16,
-        borderRadius: 8,
-        marginBottom: 16,
-    },
-    modalCardTitle: {
-        color: Colors.WHITE,
-        fontSize: 18,
-        marginBottom: 8,
-    },
-    modalCardValue: {
-        color: Colors.WHITE,
         fontSize: 16,
-    },
-    modalContentContainer: {
-        flexGrow: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
     },
 });
